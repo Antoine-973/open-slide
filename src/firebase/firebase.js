@@ -19,7 +19,5 @@ export default async function login(callback) {
     } catch (error) {
         console.error(error) ;
     }
-
-
 }
 
