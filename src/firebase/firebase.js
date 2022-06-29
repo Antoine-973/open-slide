@@ -5,8 +5,9 @@ import firebaseConfig from "./firebaseConfig.json" ;
 const googleProvider = new GoogleAuthProvider() ;
 let user ;
 let accessToken ;
-const auth = getAuth();
 const app = initializeApp(firebaseConfig) ;
+const auth = getAuth();
+
 
 export default async function login(callback) {
     try {
