@@ -7,7 +7,7 @@ let user ;
 let accessToken ;
 const app = initializeApp(firebaseConfig) ;
 const auth = getAuth(app);
-gt
+
 export default async function login(callback) {
     try {
         const result = await signInWithPopup(auth,googleProvider);
