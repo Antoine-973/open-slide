@@ -1,0 +1,14 @@
+.reveal{
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.App .reveal.center{
+    min-height: 100vh!important;
+    max-height: 100vh;
+    min-width: 100vw;
+}
+
+.App .reveal .progress{
+    height: 5px;
+}
