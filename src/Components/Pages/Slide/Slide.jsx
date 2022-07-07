@@ -1,4 +1,4 @@
-import $ from 'react'
+import react from 'react'
 
 export const Slide = () => {
     return(
