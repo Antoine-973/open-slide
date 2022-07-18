@@ -11,11 +11,20 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import {Slideshow} from "@mui/icons-material";
+import { getAuth, signOut } from "firebase/auth";
 
 const pages = ['Mes présentations', 'Créer une présentation'];
 const settings = ['Logout'];
+
+const logout = () => {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+    }).catch((error) => {
+        console.log(error)
+    });}
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -150,7 +159,7 @@ const Navbar = () => {
                         >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
+                                    <Typography textAlign="center" onClick={() => logout()}>Logout</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
