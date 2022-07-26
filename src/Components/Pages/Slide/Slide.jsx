@@ -1,8 +1,8 @@
-import react, {useContext} from 'react'
+import  {useContext} from 'react'
 import {AuthContext} from "../../Provider/AuthProvider";
 import Navbar from "../../Libs/Navbar";
-import {Button, Grid, Typography} from "@mui/material";
-import {db, getUser} from "../../../firebase/firebase";
+import {Grid} from "@mui/material";
+import { getUser} from "../../../firebase/firebase";
 
 export const Slide = () => {
     const {  auth, setAuthData } = useContext(AuthContext);

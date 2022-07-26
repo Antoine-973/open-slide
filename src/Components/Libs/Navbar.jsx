@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,13 +6,14 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import {Slideshow} from "@mui/icons-material";
 import { getAuth, signOut } from "firebase/auth";
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const pages = [{name:'Mes présentations', url:'/slide'}, {name:'Créer une présentation',url:'/create'}];
 const settings = ['Logout'];
@@ -23,13 +23,13 @@ const logout = () => {
     signOut(auth).then(() => {
         window.location.href = '/login';
     }).catch((error) => {
-        console.log(error) ;
+        console.error(error) ;
     });
 };
 
 const Navbar = () => {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
     const navigate = useNavigate() ;
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -142,7 +142,7 @@ const Navbar = () => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <SettingsIcon color={"#FFF"}/>
                             </IconButton>
                         </Tooltip>
                         <Menu

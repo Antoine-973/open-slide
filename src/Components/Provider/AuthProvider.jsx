@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }) => {
         Auth.onAuthStateChanged((user) => {
             if(user) {
                 setAuth(user) ;
-                setLoader(false) ;
             }
+            setLoader(false) ;
         })
     },[auth]) ;
 
