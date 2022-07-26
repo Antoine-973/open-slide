@@ -1,26 +1,29 @@
 import firebaseConfig from "./firebaseConfig.json" ;
 import {getDatabase} from "firebase/database";
-import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import {getAuth, GoogleAuthProvider, signInWithPopup, setPersistence, browserLocalPersistence} from "firebase/auth";
 import {initializeApp} from "firebase/app";
 
 initializeApp(firebaseConfig) ;
 
 export const auth = getAuth();
-
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
-
 export const db = getDatabase();
 
-export const signInWithGoogle = () => {
+export const signInWithGoogle = async () => {
     try {
-        return signInWithPopup(auth,provider).then(user => {
-            return user ;
-        });
+         await setPersistence(auth, browserLocalPersistence ).then( async ()=> {
+            const provider = new GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+
+             return await signInWithPopup(auth,provider).then(user => {
+                console.log("User is logged in !" + user) ;
+            });
+        }) ;
+         return getUser() ;
     }catch (error) {
         console.log(error);
     }
-    return null ;
 }
+
+export const getUser = () => { return auth?.currentUser ?? null };
 
 
