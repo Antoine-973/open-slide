@@ -21,11 +21,12 @@ const settings = ['Logout'];
 const logout = () => {
     const auth = getAuth();
     signOut(auth).then(() => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('open-slide-auth-token');
         window.location.href = '/login';
     }).catch((error) => {
-        console.log(error)
-    });}
+        console.log(error) ;
+    });
+};
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
