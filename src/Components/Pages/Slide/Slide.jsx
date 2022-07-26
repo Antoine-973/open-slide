@@ -6,14 +6,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {Slideshow} from "@mui/icons-material";
-import {getAuth, signOut} from "firebase/auth";
 import {Button, Grid, TextField} from "@mui/material";
 import {onValue, ref} from "@firebase/database";
 import {db} from "../../../firebase/firebase";
 import Box from "@mui/material/Box";
 
 export const Slide = () => {
-    const {auth, setAuthData } = useContext(AuthContext);
     const {id} = useParams();
     const [document, setDocument] = useState({loading:true, data: {}});
     const navigate = useNavigate() ;
