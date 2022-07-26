@@ -1,39 +1,25 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import firebase from "firebase/compat";
-const AuthContext = createContext();
+import {useNavigate} from "react-router-dom";
+import firebase from "../../firebase/firebase" ;
+
+export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const navigate = useNavigate();
-    const token = localStorage.getItem("token");
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(user => {
-            console.log("user", user);
-            setUser(user);
-        })
-    }, [])
 
-    console.log(firebase);
-    /* Delete user if token is not present */
+    const navigate = useNavigate() ;
+    const [auth,setAuth] = useState({loading:true, data:null}) ;
+    const setAuthData =  (data) =>  {
+        setAuth({loading:false, data:data}) ;
+        console.log(auth) ;
+    }
     useEffect(() => {
-        console.log(token);
-        if (!token) {
-            setUser(null);
+        if(auth.data === null){
+            navigate('login') ;
         }
-    }, [token])
+    },[auth]) ;
 
-    useEffect(() => {
-        if (user?.auth?.currentUser.accessToken) {
-            navigate("/");
-        }else {
-            navigate("/login")
-        }
-    }, [user])
-
-    return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ auth, setAuthData }}>{children}</AuthContext.Provider>
 };
 
-export const useAuth = () => {
-    return useContext(AuthContext);
-};
+export default AuthProvider ;
+

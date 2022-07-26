@@ -10,12 +10,13 @@ provider.setCustomParameters({ prompt: 'select_account' });
 
 export const signInWithGoogle = () => {
     try {
-        auth.signInWithPopup(provider).then(r => {
-            window.location.href = "/";
+        return auth.signInWithPopup(provider).then(user => {
+            return user ;
         });
     }catch (error) {
         console.log(error);
     }
+    return null ;
 }
 
 export default firebase;

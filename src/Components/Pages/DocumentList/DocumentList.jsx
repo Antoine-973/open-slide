@@ -1,7 +1,9 @@
-import $ from 'react'
+import $, {useContext} from 'react'
 import {Button, Container, Grid, IconButton, Typography} from "@mui/material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Navbar from "../../Libs/Navbar";
+import {AuthContext} from "../../Provider/AuthProvider";
+import {useNavigate} from "react-router-dom";
 
 const documents = [
     {
@@ -19,6 +21,10 @@ const documents = [
 ]
 
 export const DocumentList = () => {
+
+    const {  auth, setAuthData } = useContext(AuthContext);
+    console.log(auth) ;
+
     return(
         <Grid container direction={"column"} gap={6}>
             <Grid item>
@@ -30,7 +36,7 @@ export const DocumentList = () => {
                 </Button>
             </Grid>
             <Grid item container border={1} borderColor={"red"} justifyItems={"flex-start"} gap={2} px={6}>
-                <Typography variant={"h6"}>Mes présentations</Typography>
+                <Typography  variant={"h6"}>Mes présentations</Typography>
                 <Grid container direction={"row"} justifyContent={"flex-start"} alignItems={"flex-start"} wrap gap={6}>
                     <Grid item bgcolor={"red"} width={208} height={163}>
                         Test
