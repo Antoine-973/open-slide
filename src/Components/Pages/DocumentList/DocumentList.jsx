@@ -25,7 +25,6 @@ export const DocumentList = () => {
             setDeletion(true);
         }
     }
-
     const handleClick = () => {
         const postListRef = ref(db, 'documents');
         const newPostRef = push(postListRef);
@@ -37,6 +36,7 @@ export const DocumentList = () => {
                     position: 1,
                 },
             ],
+            user_id: auth.uid,
         })
         .then(() => {
             console.log("Document created");
@@ -85,20 +85,22 @@ export const DocumentList = () => {
             <Grid item container justifyContent={"center"} gap={6}>
                 {
                     documents.map((document, key) => {
-                        return (
-                            <Paper key={key} elevation={8} variant={"elevation"} sx={{position : "relative"}}>
-                                <Grid style={{cursor : "pointer"}} onClick={() => goToDocument(document)} width={200} height={100} padding={4} textAlign={"center"} position={"relative"} display={"block"} >
-                                    <Typography>{document.title}</Typography>
-                                </Grid>
-                                <Grid item position={"absolute"} top={0} right={0} margin={0}>
-                                    <IconButton onClick={() => {
-                                        deleteDocument(document);
-                                    }}>
-                                        <CloseIcon/>
-                                    </IconButton>
-                                </Grid>
-                            </Paper>
-                        )
+                        if(document.user_id == auth.uid) {
+                            return (
+                                <Paper key={key} elevation={8} variant={"elevation"} sx={{position : "relative"}}>
+                                    <Grid style={{cursor : "pointer"}} onClick={() => goToDocument(document)} width={200} height={100} padding={4} textAlign={"center"} position={"relative"} display={"block"} >
+                                        <Typography>{document.title}</Typography>
+                                    </Grid>
+                                    <Grid item position={"absolute"} top={0} right={0} margin={0}>
+                                        <IconButton onClick={() => {
+                                            deleteDocument(document);
+                                        }}>
+                                            <CloseIcon/>
+                                        </IconButton>
+                                    </Grid>
+                                </Paper>
+                            )
+                        }
                     })
                 }
             </Grid>
