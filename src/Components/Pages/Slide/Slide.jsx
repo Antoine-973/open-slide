@@ -1,13 +1,12 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../../Provider/AuthProvider";
+import {useEffect, useState} from "react";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {Slideshow} from "@mui/icons-material";
 import {Button, Grid, TextField} from "@mui/material";
-import {onValue, ref} from "@firebase/database";
+import {onValue, ref, update} from "@firebase/database";
 import {db} from "../../../firebase/firebase";
 import Box from "@mui/material/Box";
 
@@ -18,7 +17,6 @@ export const Slide = () => {
 
     const initDocument = () => {
         const path = ref(db, 'documents/' + id);
-        console.log(path);
         onValue(path, (data) => {
                 setDocument({loading:false, data: {key : data.key, ...data.val()}});
             }
@@ -26,6 +24,26 @@ export const Slide = () => {
                 console.log(error);
             }
         );
+    }
+
+    const updateDocument = () => {
+        const path = ref(db, 'documents/' + id);
+        update(path, document.data).then(() => {
+            console.log('Document updated');
+        }
+        , (error) => {
+            console.log(error);
+        }
+        );
+    }
+
+    useEffect(() => {
+        updateDocument();
+    }, [document.data.title])
+
+    const handleTitleChange = (event) => {
+        event.preventDefault();
+        setDocument({...document, data: {...document.data, title: event.target.value}});
     }
 
     useEffect(() => {
@@ -59,7 +77,7 @@ export const Slide = () => {
                         >
                             Open Slides
                         </Typography>
-                        <TextField value={document.data.title}></TextField>
+                        <TextField onChange={handleTitleChange} value={document.data.title}></TextField>
                         <Slideshow sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}  onClick={() => {navigate('/')}} />
                         <Typography
                             variant="h5"
@@ -89,7 +107,6 @@ export const Slide = () => {
                         {document.data?.slides?.map((slide, index) => {
                             return(
                                 <Box key={index}>
-                                    <Box>{slide.title}</Box>
                                     <Box>{slide.content}</Box>
                                 </Box>
                             )

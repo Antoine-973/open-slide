@@ -11,7 +11,6 @@ import {AddBox} from "@mui/icons-material";
 export const DocumentList = () => {
 
     const [loading, setLoading] = useState(true);
-    const [showDelete, setShowDelete] = useState(false);
     const [documents, setDocuments] = useState([]);
     const [deletion, setDeletion] = useState(false);
     const { auth, setAuthData } = useContext(AuthContext);
@@ -72,7 +71,7 @@ export const DocumentList = () => {
         !loading &&
         <Grid container direction={"column"} gap={6}>
             <Grid item>
-                <Navbar/>
+                <Navbar />
             </Grid>
             <Grid item textAlign={"center"}>
                 <Typography variant={"h4"}>Mes présentations</Typography>
