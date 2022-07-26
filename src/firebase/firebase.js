@@ -1,16 +1,20 @@
 import firebaseConfig from "./firebaseConfig.json" ;
-import firebase from "firebase/compat";
+import {getDatabase} from "firebase/database";
+import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import {initializeApp} from "firebase/app";
 
-firebase.initializeApp(firebaseConfig) ;
+initializeApp(firebaseConfig) ;
 
-export const auth = firebase.auth();
+export const auth = getAuth();
 
-const provider = new firebase.auth.GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
+
+export const db = getDatabase();
 
 export const signInWithGoogle = () => {
     try {
-        return auth.signInWithPopup(provider).then(user => {
+        return signInWithPopup(auth,provider).then(user => {
             return user ;
         });
     }catch (error) {
@@ -18,7 +22,5 @@ export const signInWithGoogle = () => {
     }
     return null ;
 }
-
-export default firebase;
 
 

@@ -1,6 +1,5 @@
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import firebase from "../../firebase/firebase" ;
 
 export const AuthContext = createContext({});
 
