@@ -1,10 +1,12 @@
 import {useContext, useEffect, useState} from 'react'
-import {Button, Container, Grid, IconButton, Paper, Typography} from "@mui/material";
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import {Button, Grid, IconButton, Paper, Typography} from "@mui/material";
 import Navbar from "../../Libs/Navbar";
-import {child, get, ref, remove} from "firebase/database";
+import {child, get, ref, remove, push, set} from "firebase/database";
 import {db} from "../../../firebase/firebase";
 import CloseIcon from '@mui/icons-material/Close';
+import {AuthContext} from "../../Provider/AuthProvider";
+import {useNavigate} from "react-router-dom";
+import {AddBox} from "@mui/icons-material";
 
 export const DocumentList = () => {
 
@@ -12,6 +14,8 @@ export const DocumentList = () => {
     const [showDelete, setShowDelete] = useState(false);
     const [documents, setDocuments] = useState([]);
     const [deletion, setDeletion] = useState(false);
+    const { auth, setAuthData } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const deleteDocument = (document) => {
         remove(ref(db,'/documents/'+document.id));
@@ -20,6 +24,32 @@ export const DocumentList = () => {
         }else {
             setDeletion(true);
         }
+    }
+
+    const handleClick = () => {
+        const postListRef = ref(db, 'documents');
+        const newPostRef = push(postListRef);
+        set(newPostRef,{
+            title: "New document",
+            slides: [
+                {
+                    content: "Test",
+                    position: 1,
+                },
+            ],
+        })
+        .then(() => {
+            console.log("Document created");
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+        navigate(`/slide/${newPostRef.key}`);
+    }
+
+    const goToDocument = (document) => {
+        navigate(`/slide/${document.id}`);
     }
 
     useEffect(() => {
@@ -44,27 +74,28 @@ export const DocumentList = () => {
             <Grid item>
                 <Navbar/>
             </Grid>
-            <Grid item>
-                <Button size={"large"} variant={"contained"} startIcon={<AddBoxIcon/>}>
+            <Grid item textAlign={"center"}>
+                <Typography variant={"h4"}>Mes présentations</Typography>
+            </Grid>
+            <Grid item textAlign={"center"}>
+                <Button size={"large"} variant={"contained"} onClick={handleClick} startIcon={<AddBox/>}>
                     Créer une présentation
                 </Button>
             </Grid>
-            <Typography variant={"h6"}>Mes présentations</Typography>
-
-            <Grid container justifyContent={"center"} gap={6}>
+            <Grid item container justifyContent={"center"} gap={6}>
                 {
-                    documents.map((document,key) => {
+                    documents.map((document, key) => {
                         return (
-                            <Paper key={key} elevation={8} variant={"elevation"} >
-                                <Grid width={200} height={100} padding={4} textAlign={"center"} position={"relative"} display={"block"} >
-                                        <Grid item position={"absolute"} top={0} right={0} margin={0}>
-                                            <IconButton onClick={() => {
-                                                deleteDocument(document);
-                                            }}>
-                                                <CloseIcon/>
-                                            </IconButton>
-                                        </Grid>
+                            <Paper key={key} elevation={8} variant={"elevation"} sx={{position : "relative"}}>
+                                <Grid style={{cursor : "pointer"}} onClick={() => goToDocument(document)} width={200} height={100} padding={4} textAlign={"center"} position={"relative"} display={"block"} >
                                     <Typography>{document.title}</Typography>
+                                </Grid>
+                                <Grid item position={"absolute"} top={0} right={0} margin={0}>
+                                    <IconButton onClick={() => {
+                                        deleteDocument(document);
+                                    }}>
+                                        <CloseIcon/>
+                                    </IconButton>
                                 </Grid>
                             </Paper>
                         )
