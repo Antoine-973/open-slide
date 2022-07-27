@@ -40,7 +40,7 @@ export const Slide = () => {
     const handleAddSlide = () => {
         const path = ref(db, 'documents/' + id);
         const updates = {};
-        updates['/slides'] = [...document.data.slides, {content: 'mmm', position: document.data.slides.length + 1}];
+        updates['/slides'] = [...document.data.slides, {content: '', position: document.data.slides.length + 1}];
         update(path, updates).then(() => {
             console.log('Slide added');
         }, (error) => {
