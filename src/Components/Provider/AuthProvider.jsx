@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
     return <AuthContext.Provider value={{ auth, setAuthData }}>
         {
-            loader === true ?  'JE CHARGE ZEUBI' :  children
+            loader === true ?  '' :  children
         }
     </AuthContext.Provider>
 };

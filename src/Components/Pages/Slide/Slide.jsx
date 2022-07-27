@@ -24,14 +24,13 @@ export const Slide = () => {
     const editorRef = useRef(null);
     const [isQuill, setIsQuill] = useState(false);
 
-
     const initDocument = () => {
         const path = ref(db, 'documents/' + id);
         onValue(path, (data) => {
                 setDocument({loading: false, data: {key: data.key, ...data.val()}});
             }
             , (error) => {
-                console.log(error);
+                console.error(error);
             }
         );
     }
@@ -42,10 +41,11 @@ export const Slide = () => {
                 console.log('Document updated');
             }
             , (error) => {
-                console.log(error);
+                console.error(error);
             }
         );
     };
+
 
     const updateSlide = (data) => {
        const path = ref(db, 'documents/' + id + '/slides/' + slideId);
@@ -61,7 +61,7 @@ export const Slide = () => {
         update(path, updates).then(() => {
             console.log('Slide added');
         }, (error) => {
-            console.log(error);
+            console.error(error);
         });
     }
 
@@ -120,9 +120,7 @@ export const Slide = () => {
 
             quill.on('text-change', (delta, old, source) => {
                 if (source === 'user') {
-                    console.log(slideId) ;
                     updateSlide(quill.getText()) ;
-                    console.log(quill.getText()) ;
                 }
             }) ;
         }
@@ -131,10 +129,14 @@ export const Slide = () => {
         }
     },[slideId])
 
-    const handleSlideChange = (index) => {
-        console.log("id change") ;
+    const handleSlideChange = async (index) => {
         setSlideId(index);
-        //editorRef.current.children[0].children[0].innerHTML =  document?.data?.slides[index]?.content;
+        let data = '' ;
+        const path = ref(db,'documents/' + id + '/slides/' + index) ;
+        await onValue(path,async (slideData) => {
+            data = await slideData.val()['content'] ;
+        }) ;
+        editorRef.current.children[0].children[0].innerHTML =  data ;
     } ;
 
     return (
